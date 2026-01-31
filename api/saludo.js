@@ -1,5 +1,5 @@
 export default function handler(req, res) {
-  const nombre = req.query.nombre || "anónimo";
+  const nombre = req.query.nombre || "César Bocel 1094921";
 
   res.status(200).json({
     mensaje: `Hola ${nombre}`,
