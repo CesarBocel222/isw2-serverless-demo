@@ -80,4 +80,39 @@ test("procesar devuelve JSON con estructura válida", () => {
   // Validar que no haya propiedades extras
   const keys = Object.keys(res.body);
   assert.equal(keys.length, 2, "Solo debe tener 2 propiedades");
+})
+
+
+
+test("procesar siempre retorna nombre en mayúsculas", () => {
+  const testCases = [
+    { input: "pedro", expected: "PEDRO" },
+    { input: "MARÍA", expected: "MARÍA" },
+    { input: "JoSé", expected: "JOSÉ" },
+    { input: "ana maría", expected: "ANA MARÍA" }
+  ];
+
+  testCases.forEach(({ input, expected }) => {
+    const req = { query: { nombre: input } };
+    const res = {
+      statusCode: null,
+      body: null,
+      status(code) {
+        this.statusCode = code;
+        return this;
+      },
+      json(payload) {
+        this.body = payload;
+        return this;
+      }
+    };
+
+    handler(req, res);
+
+    // Verificar que el nombre en el resultado esté en mayúsculas
+    assert.ok(
+      res.body.resultado.includes(expected),
+      `"${input}" debe convertirse a "${expected}"`
+    );
+  });
 });
